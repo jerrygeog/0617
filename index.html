@@ -6,98 +6,97 @@
 <title>得正 Oolong Tea Project｜團購訂單</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Helvetica Neue', Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-    background: #f5f0e8; color: #1a1a2e; min-height: 100vh;
-  }
-  header {
-    background: #1a1a2e; color: #f5f0e8;
-    padding: 28px 20px 20px; text-align: center;
-  }
+  body { font-family: 'Helvetica Neue', Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif; background: #f5f0e8; color: #1a1a2e; min-height: 100vh; }
+
+  header { background: #1a1a2e; color: #f5f0e8; padding: 24px 20px 18px; text-align: center; }
   header .brand-en { font-size: 11px; letter-spacing: 4px; color: #8db4c8; margin-bottom: 4px; }
   header h1 { font-size: 26px; font-weight: 700; letter-spacing: 2px; }
-  header .subtitle { font-size: 12px; color: #8db4c8; margin-top: 6px; letter-spacing: 1px; }
+  header .subtitle { font-size: 12px; color: #8db4c8; margin-top: 6px; }
 
   .tab-bar { display: flex; background: #1a1a2e; position: sticky; top: 0; z-index: 10; }
-  .tab { flex: 1; padding: 12px; text-align: center; font-size: 12px; font-weight: 700; color: #8db4c8; cursor: pointer; letter-spacing: 1px; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab { flex: 1; padding: 11px; text-align: center; font-size: 12px; font-weight: 700; color: #8db4c8; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
   .tab.active { color: #f5f0e8; border-bottom-color: #8db4c8; }
 
   .view { display: none; }
   .view.active { display: block; }
 
-  .order-form { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 100px; }
+  .order-form { max-width: 480px; margin: 0 auto; padding: 14px; padding-bottom: 100px; }
 
-  .name-section { background: white; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-  .name-section label { font-size: 13px; color: #666; display: block; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px; }
-  .name-section input { width: 100%; border: 2px solid #e0d8cc; border-radius: 10px; padding: 12px 14px; font-size: 16px; outline: none; transition: border-color 0.2s; background: #faf8f5; }
+  .name-section { background: white; border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .name-section label { font-size: 12px; color: #666; display: block; margin-bottom: 7px; font-weight: 600; }
+  .name-section input { width: 100%; border: 2px solid #e0d8cc; border-radius: 10px; padding: 11px 14px; font-size: 16px; outline: none; background: #faf8f5; }
   .name-section input:focus { border-color: #1a1a2e; }
 
-  .category { margin-bottom: 12px; }
-  .category-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #8db4c8; padding: 0 4px 8px; border-bottom: 1px solid #d6cfc4; margin-bottom: 8px; }
+  .category { margin-bottom: 10px; }
+  .category-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #8db4c8; padding: 0 4px 7px; border-bottom: 1px solid #d6cfc4; margin-bottom: 8px; }
 
-  .item { background: white; border-radius: 14px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
-  .item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .item-info .item-name { font-size: 15px; font-weight: 700; color: #1a1a2e; }
-  .item-info .item-name-en { font-size: 11px; color: #999; margin-top: 2px; }
+  /* Item card */
+  .item-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .item-top { display: flex; align-items: center; justify-content: space-between; }
+  .item-info .item-name { font-size: 15px; font-weight: 700; }
+  .item-info .item-name-en { font-size: 11px; color: #999; margin-top: 1px; }
   .item-info .item-price { font-size: 12px; color: #5a7f94; margin-top: 3px; font-weight: 600; }
+  .rec-dot { display: inline-block; width: 6px; height: 6px; background: #8db4c8; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 
-  .size-controls { display: flex; flex-direction: column; gap: 6px; }
-  .size-row { display: flex; align-items: center; gap: 6px; }
-  .size-label { font-size: 11px; color: #888; width: 14px; font-weight: 700; }
-  .qty-control { display: flex; align-items: center; border: 1.5px solid #e0d8cc; border-radius: 8px; overflow: hidden; background: #faf8f5; }
-  .qty-btn { width: 30px; height: 30px; border: none; background: none; font-size: 17px; cursor: pointer; color: #1a1a2e; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+  .size-btns { display: flex; flex-direction: column; gap: 5px; }
+  .size-row { display: flex; align-items: center; gap: 5px; }
+  .size-lbl { font-size: 11px; font-weight: 700; color: #888; width: 14px; }
+  .qty-ctrl { display: flex; align-items: center; border: 1.5px solid #e0d8cc; border-radius: 8px; overflow: hidden; background: #faf8f5; }
+  .qty-btn { width: 30px; height: 28px; border: none; background: none; font-size: 16px; cursor: pointer; color: #1a1a2e; display: flex; align-items: center; justify-content: center; }
   .qty-btn:active { background: #eee; }
-  .qty-display { width: 28px; text-align: center; font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .qty-num { width: 26px; text-align: center; font-size: 14px; font-weight: 700; }
 
-  /* Options area - shown when qty > 0 */
-  .item-options { display: none; border-top: 1px solid #f0ece4; padding-top: 12px; margin-top: 4px; }
-  .item-options.visible { display: block; }
-
-  .option-group { margin-bottom: 10px; }
-  .option-label { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 1px; margin-bottom: 6px; }
-  .option-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1.5px solid #e0d8cc; background: #faf8f5; color: #555; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-  .chip.selected { background: #1a1a2e; color: #f5f0e8; border-color: #1a1a2e; }
+  /* Cup rows */
+  .cups-area { margin-top: 10px; }
+  .cup-row { background: #f8f5f0; border-radius: 10px; padding: 10px 12px; margin-top: 7px; border-left: 3px solid #8db4c8; }
+  .cup-row-header { font-size: 12px; font-weight: 700; color: #5a7f94; margin-bottom: 8px; }
+  .opt-group { margin-bottom: 7px; }
+  .opt-group:last-child { margin-bottom: 0; }
+  .opt-lbl { font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { padding: 4px 11px; border-radius: 16px; font-size: 12px; font-weight: 600; border: 1.5px solid #e0d8cc; background: white; color: #555; cursor: pointer; transition: all 0.15s; }
+  .chip.on { background: #1a1a2e; color: #f5f0e8; border-color: #1a1a2e; }
   .chip.topping { border-color: #8db4c8; }
-  .chip.topping.selected { background: #8db4c8; color: #1a1a2e; border-color: #8db4c8; }
+  .chip.topping.on { background: #8db4c8; color: #1a1a2e; border-color: #8db4c8; }
+  .no-ice-note { font-size: 11px; color: #e07b4a; margin-top: 2px; }
 
-  .size-option-block { background: #faf8f5; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
-  .size-option-title { font-size: 11px; font-weight: 700; color: #5a7f94; margin-bottom: 8px; letter-spacing: 1px; }
-
-  .recommend-dot { display: inline-block; width: 6px; height: 6px; background: #8db4c8; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-
-  .summary-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a2e; color: #f5f0e8; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 -4px 20px rgba(0,0,0,0.18); z-index: 100; }
-  .summary-bar .my-total { font-size: 13px; color: #8db4c8; }
-  .summary-bar .my-amount { font-size: 20px; font-weight: 700; }
+  /* Bottom bar */
+  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a2e; color: #f5f0e8; padding: 13px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 -4px 20px rgba(0,0,0,0.18); z-index: 100; }
+  .bottom-bar .lbl { font-size: 12px; color: #8db4c8; }
+  .bottom-bar .amt { font-size: 20px; font-weight: 700; }
   .submit-btn { background: #8db4c8; color: #1a1a2e; border: none; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; }
-  .submit-btn:active { background: #7aa3b5; }
 
   /* Summary */
-  .summary-wrap { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 40px; }
-  .grand-bar { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding: 14px 20px; background: #1a1a2e; color: #f5f0e8; border-radius: 12px; margin-bottom: 12px; }
-  .stat-row { display: flex; gap: 10px; margin-bottom: 12px; }
-  .stat-box { flex: 1; background: white; border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
-  .stat-box .stat-label { font-size: 11px; color: #999; margin-bottom: 4px; }
-  .stat-box .stat-val { font-size: 22px; font-weight: 700; }
-  .card { background: white; border-radius: 14px; padding: 20px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-  .card-title { font-size: 13px; color: #8db4c8; letter-spacing: 2px; margin-bottom: 14px; }
+  .summary-wrap { max-width: 480px; margin: 0 auto; padding: 14px 14px 40px; }
+  .grand-bar { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding: 14px 18px; background: #1a1a2e; color: #f5f0e8; border-radius: 12px; margin-bottom: 10px; }
+  .stat-row { display: flex; gap: 10px; margin-bottom: 10px; }
+  .stat-box { flex: 1; background: white; border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .stat-box .sl { font-size: 11px; color: #999; margin-bottom: 3px; }
+  .stat-box .sv { font-size: 22px; font-weight: 700; }
+  .card { background: white; border-radius: 14px; padding: 18px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .card-title { font-size: 12px; color: #8db4c8; letter-spacing: 2px; margin-bottom: 12px; }
   .person-block { border-bottom: 1px solid #f0ece4; padding-bottom: 12px; margin-bottom: 12px; }
   .person-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .person-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-  .order-entry { font-size: 13px; background: #faf8f5; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
-  .order-entry .entry-main { display: flex; justify-content: space-between; font-weight: 600; }
-  .order-entry .entry-opts { font-size: 11px; color: #888; margin-top: 3px; }
-  .person-subtotal { font-size: 14px; font-weight: 700; text-align: right; color: #1a1a2e; margin-top: 6px; }
-  .item-stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f0ece4; }
-  .item-stat-row:last-child { border-bottom: none; }
-  .action-btns { display: flex; gap: 10px; margin-bottom: 12px; }
-  .btn-outline { flex: 1; padding: 12px; border: 2px solid #1a1a2e; background: white; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
-  .btn-danger { flex: 1; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .pname { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .entry-row { background: #faf8f5; border-radius: 8px; padding: 8px 10px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .entry-left .en { font-size: 13px; font-weight: 700; }
+  .entry-left .eo { font-size: 11px; color: #888; margin-top: 2px; }
+  .entry-right { font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .psubtotal { font-size: 14px; font-weight: 700; text-align: right; margin-top: 6px; }
 
-  .copied-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #1a1a2e; color: white; padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; display: none; z-index: 999; }
+  /* Item stat rows */
+  .istat { border-bottom: 1px solid #f0ece4; padding: 7px 0; }
+  .istat:last-child { border-bottom: none; }
+  .istat-main { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
+  .istat-opts { font-size: 11px; color: #888; margin-top: 2px; }
 
-  .empty-state { text-align: center; padding: 60px 20px; color: #999; }
-  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .action-btns { display: flex; gap: 10px; margin-bottom: 10px; }
+  .btn-o { flex: 1; padding: 12px; border: 2px solid #1a1a2e; background: white; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .btn-d { flex: 1; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+  .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #1a1a2e; color: white; padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; display: none; z-index: 999; }
+  .empty { text-align: center; padding: 60px 20px; color: #999; }
+  .empty .icon { font-size: 40px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -120,390 +119,378 @@
       <input type="text" id="buyer-name" placeholder="請輸入您的名字" />
     </div>
 
-    <!-- 原味茶 -->
     <div class="category">
       <div class="category-title">ORIGINAL TEA　原味茶</div>
-      <div class="item" data-name="紅茶" data-en="Black Tea" data-m="25" data-l="30"></div>
-      <div class="item" data-name="綠茶" data-en="Green Tea" data-m="25" data-l="30"></div>
-      <div class="item" data-name="春烏龍" data-en="Spring Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
-      <div class="item" data-name="輕烏龍" data-en="Light Roasted Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
-      <div class="item" data-name="焙烏龍" data-en="Dark Roasted Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
+      <div class="item-card" data-name="紅茶" data-en="Black Tea" data-m="25" data-l="30"></div>
+      <div class="item-card" data-name="綠茶" data-en="Green Tea" data-m="25" data-l="30"></div>
+      <div class="item-card" data-name="春烏龍" data-en="Spring Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
+      <div class="item-card" data-name="輕烏龍" data-en="Light Roasted Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
+      <div class="item-card" data-name="焙烏龍" data-en="Dark Roasted Oolong Tea" data-m="30" data-l="35" data-rec="1"></div>
     </div>
 
-    <!-- 水果茶 -->
     <div class="category">
       <div class="category-title">DOUBLE FRUIT　水果茶</div>
-      <div class="item" data-name="檸檬春烏龍" data-en="Lemon Spring Oolong Tea" data-m="55" data-l="65" data-rec="1"></div>
-      <div class="item" data-name="香橙春烏龍" data-en="Orange Spring Oolong Tea" data-m="60" data-l="70" data-rec="1"></div>
-      <div class="item" data-name="甘蔗春烏龍" data-en="Sugar Cane Spring Oolong Tea" data-m="60" data-l="70" data-rec="1"></div>
-      <div class="item" data-name="青梅春烏龍" data-en="Green Plum Spring Oolong Tea" data-m="50" data-l="60"></div>
-      <div class="item" data-name="優酪春烏龍" data-en="Yogurt Spring Oolong Tea" data-m="55" data-l="65"></div>
-      <div class="item" data-name="雙柚金烏龍" data-en="Yuzu Oolong Tea" data-m="55" data-l="65"></div>
+      <div class="item-card" data-name="檸檬春烏龍" data-en="Lemon Spring Oolong Tea" data-m="55" data-l="65" data-rec="1"></div>
+      <div class="item-card" data-name="香橙春烏龍" data-en="Orange Spring Oolong Tea" data-m="60" data-l="70" data-rec="1"></div>
+      <div class="item-card" data-name="甘蔗春烏龍" data-en="Sugar Cane Spring Oolong Tea" data-m="60" data-l="70" data-rec="1"></div>
+      <div class="item-card" data-name="青梅春烏龍" data-en="Green Plum Spring Oolong Tea" data-m="50" data-l="60"></div>
+      <div class="item-card" data-name="優酪春烏龍" data-en="Yogurt Spring Oolong Tea" data-m="55" data-l="65"></div>
+      <div class="item-card" data-name="雙柚金烏龍" data-en="Yuzu Oolong Tea" data-m="55" data-l="65"></div>
     </div>
 
-    <!-- 經典奶茶 -->
     <div class="category">
       <div class="category-title">CLASSIC MILK TEA　經典奶茶</div>
-      <div class="item" data-name="奶茶" data-en="Milk Tea" data-m="45" data-l="50"></div>
-      <div class="item" data-name="焙烏龍奶茶" data-en="Dark Roasted Oolong Milk Tea" data-m="45" data-l="50" data-rec="1"></div>
-      <div class="item" data-name="珍珠奶茶" data-en="Pearl Milk Tea" data-m="55" data-l="60"></div>
-      <div class="item" data-name="黃金珍珠奶綠" data-en="Golden Bubble Green Milk Tea" data-m="55" data-l="60" data-rec="1"></div>
-      <div class="item" data-name="烘吉奶茶" data-en="Hojicha Milk Tea" data-single="50"></div>
+      <div class="item-card" data-name="奶茶" data-en="Milk Tea" data-m="45" data-l="50"></div>
+      <div class="item-card" data-name="焙烏龍奶茶" data-en="Dark Roasted Oolong Milk Tea" data-m="45" data-l="50" data-rec="1"></div>
+      <div class="item-card" data-name="珍珠奶茶" data-en="Pearl Milk Tea" data-m="55" data-l="60"></div>
+      <div class="item-card" data-name="黃金珍珠奶綠" data-en="Golden Bubble Green Milk Tea" data-m="55" data-l="60" data-rec="1"></div>
+      <div class="item-card" data-name="烘吉奶茶" data-en="Hojicha Milk Tea" data-single="50"></div>
     </div>
 
-    <!-- 鮮奶系列 -->
     <div class="category">
       <div class="category-title">FRESH MILK　鮮奶系列</div>
-      <div class="item" data-name="紅茶鮮奶" data-en="Black Tea Latte" data-m="55" data-l="65" data-rec="1"></div>
-      <div class="item" data-name="輕烏龍鮮奶" data-en="Light Roasted Oolong Tea Latte" data-m="55" data-l="65" data-rec="1"></div>
-      <div class="item" data-name="焙烏龍鮮奶" data-en="Dark Roasted Oolong Tea Latte" data-m="55" data-l="65"></div>
-      <div class="item" data-name="烘吉鮮奶" data-en="Hojicha Latte" data-single="70"></div>
+      <div class="item-card" data-name="紅茶鮮奶" data-en="Black Tea Latte" data-m="55" data-l="65" data-rec="1"></div>
+      <div class="item-card" data-name="輕烏龍鮮奶" data-en="Light Roasted Oolong Tea Latte" data-m="55" data-l="65" data-rec="1"></div>
+      <div class="item-card" data-name="焙烏龍鮮奶" data-en="Dark Roasted Oolong Tea Latte" data-m="55" data-l="65"></div>
+      <div class="item-card" data-name="烘吉鮮奶" data-en="Hojicha Latte" data-single="70"></div>
     </div>
 
-    <!-- 芝士奶蓋 -->
     <div class="category">
       <div class="category-title">CHEESE MILK FOAM　芝士奶蓋</div>
-      <div style="font-size:11px;color:#e07b4a;padding:0 4px 10px;">＊奶蓋固定少冰</div>
-      <div class="item" data-name="芝士奶蓋春烏龍" data-en="Cheese Milk Foam Spring Oolong" data-m="50" data-l="60" data-rec="1" data-no-ice="1"></div>
-      <div class="item" data-name="芝士奶蓋焙烏龍" data-en="Cheese Milk Foam Dark Roasted Oolong" data-m="50" data-l="60" data-rec="1" data-no-ice="1"></div>
-      <div class="item" data-name="芝士奶蓋阿華田" data-en="Cheese Milk Foam Ovaltine" data-m="55" data-l="65" data-no-ice="1"></div>
-      <div class="item" data-name="芝士奶蓋烘吉茶" data-en="Cheese Milk Foam Hojicha" data-m="55" data-l="65" data-no-ice="1"></div>
+      <div style="font-size:11px;color:#e07b4a;padding:0 4px 8px;">＊奶蓋固定少冰</div>
+      <div class="item-card" data-name="芝士奶蓋春烏龍" data-en="Cheese Milk Foam Spring Oolong" data-m="50" data-l="60" data-rec="1" data-noice="1"></div>
+      <div class="item-card" data-name="芝士奶蓋焙烏龍" data-en="Cheese Milk Foam Dark Roasted Oolong" data-m="50" data-l="60" data-rec="1" data-noice="1"></div>
+      <div class="item-card" data-name="芝士奶蓋阿華田" data-en="Cheese Milk Foam Ovaltine" data-m="55" data-l="65" data-noice="1"></div>
+      <div class="item-card" data-name="芝士奶蓋烘吉茶" data-en="Cheese Milk Foam Hojicha" data-m="55" data-l="65" data-noice="1"></div>
     </div>
-
-    <div style="height:20px;"></div>
   </div>
 
-  <div class="summary-bar">
+  <div class="bottom-bar">
     <div>
-      <div class="my-total">我的小計</div>
-      <div class="my-amount">$<span id="live-total">0</span></div>
+      <div class="lbl">我的小計</div>
+      <div class="amt">$<span id="live-total">0</span></div>
     </div>
     <button class="submit-btn" onclick="submitOrder()">確認送出 ▸</button>
   </div>
 </div>
 
-<!-- Summary View -->
 <div id="view-summary" class="view">
   <div class="summary-wrap" id="summary-content">
-    <div class="empty-state"><div class="icon">📋</div><div>目前還沒有人下單</div><div style="font-size:12px;margin-top:6px;">請到「填寫訂單」頁面選購</div></div>
+    <div class="empty"><div class="icon">📋</div><div>目前還沒有人下單</div></div>
   </div>
 </div>
 
-<div class="copied-toast" id="copied-toast">✅ 已複製到剪貼簿！</div>
+<div class="toast" id="toast">✅ 已複製到剪貼簿！</div>
 
 <script>
-const STORAGE_KEY = 'dezheng_v2';
-const SWEETNESS = ['正常糖', '少糖', '半糖', '微糖', '無糖'];
-const ICE = ['正常冰', '少冰', '微冰', '去冰'];
-const TOPPINGS = [
-  { label: '珍珠', extra: 10 },
-  { label: '黃金珍珠', extra: 10 },
-  { label: '焙烏龍茶凍', extra: 10 },
-];
+const STORAGE_KEY = 'dezheng_v3';
+const SWEETNESS = ['正常糖','少糖','半糖','微糖','無糖'];
+const ICE_OPTS  = ['正常冰','少冰','微冰','去冰'];
+const TOPPINGS  = ['珍珠','黃金珍珠','焙烏龍茶凍'];
 
-function loadOrders() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
-}
-function saveOrders(o) { localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); }
+function loadOrders() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e){ return []; } }
+function saveOrders(o){ localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); }
 
-function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-  if (name === 'summary') renderSummary();
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='summary') renderSummary();
 }
 
-// Build all item cards
-function buildItems() {
-  document.querySelectorAll('.item[data-name]').forEach(el => {
-    const name = el.dataset.name;
-    const en = el.dataset.en || '';
-    const priceM = parseInt(el.dataset.m || 0);
-    const priceL = parseInt(el.dataset.l || 0);
-    const priceSingle = parseInt(el.dataset.single || 0);
-    const isRec = el.dataset.rec === '1';
-    const noIce = el.dataset.noIce === '1';
+/* ── Build item cards ── */
+function buildItems(){
+  document.querySelectorAll('.item-card[data-name]').forEach(el=>{
+    const name   = el.dataset.name;
+    const en     = el.dataset.en||'';
+    const priceM = parseInt(el.dataset.m||0);
+    const priceL = parseInt(el.dataset.l||0);
+    const priceS = parseInt(el.dataset.single||0);
+    const isRec  = el.dataset.rec==='1';
+    const noIce  = el.dataset.noice==='1';
+    const priceLabel = priceS ? `$${priceS}` : `M $${priceM} ／ L $${priceL}`;
 
-    const priceLabel = priceSingle ? `$${priceSingle}` : `M $${priceM} ／ L $${priceL}`;
-    const recDot = isRec ? '<span class="recommend-dot"></span>' : '';
-
-    let sizeControls = '';
-    if (priceSingle) {
-      sizeControls = `<div class="size-controls"><div class="size-row"><div class="qty-control">
-        <button class="qty-btn" onclick="changeQty(this,-1,'single')">−</button>
-        <span class="qty-display" data-size="single">0</span>
-        <button class="qty-btn" onclick="changeQty(this,1,'single')">+</button>
-      </div></div></div>`;
+    let sizeHTML = '';
+    if(priceS){
+      sizeHTML = `<div class="size-btns"><div class="size-row">
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(this,-1,'S')">−</button>
+          <span class="qty-num" data-sz="S">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1,'S')">+</button>
+        </div></div></div>`;
     } else {
-      sizeControls = `<div class="size-controls">
-        <div class="size-row"><span class="size-label">M</span><div class="qty-control">
+      sizeHTML = `<div class="size-btns">
+        <div class="size-row"><span class="size-lbl">M</span><div class="qty-ctrl">
           <button class="qty-btn" onclick="changeQty(this,-1,'M')">−</button>
-          <span class="qty-display" data-size="M">0</span>
+          <span class="qty-num" data-sz="M">0</span>
           <button class="qty-btn" onclick="changeQty(this,1,'M')">+</button>
         </div></div>
-        <div class="size-row"><span class="size-label">L</span><div class="qty-control">
+        <div class="size-row"><span class="size-lbl">L</span><div class="qty-ctrl">
           <button class="qty-btn" onclick="changeQty(this,-1,'L')">−</button>
-          <span class="qty-display" data-size="L">0</span>
+          <span class="qty-num" data-sz="L">0</span>
           <button class="qty-btn" onclick="changeQty(this,1,'L')">+</button>
         </div></div>
       </div>`;
     }
 
-    // Options per size
-    function sizeOptionBlock(size, label) {
-      const iceBlock = noIce ? `<div style="font-size:11px;color:#e07b4a;margin-top:4px;">（奶蓋固定少冰）</div>` : `
-        <div class="option-group">
-          <div class="option-label">🧊 冰塊</div>
-          <div class="option-chips">
-            ${ICE.map((s,i) => `<span class="chip ${i===0?'selected':''}" data-type="ice" data-size="${size}" onclick="selectChip(this,'ice','${size}')">${s}</span>`).join('')}
-          </div>
-        </div>`;
-      return `<div class="size-option-block">
-        <div class="size-option-title">${label} 杯設定</div>
-        <div class="option-group">
-          <div class="option-label">🍬 甜度</div>
-          <div class="option-chips">
-            ${SWEETNESS.map((s,i) => `<span class="chip ${i===0?'selected':''}" data-type="sweet" data-size="${size}" onclick="selectChip(this,'sweet','${size}')">${s}</span>`).join('')}
-          </div>
-        </div>
-        ${iceBlock}
-        <div class="option-group" style="margin-bottom:0">
-          <div class="option-label">➕ 加料 <span style="color:#8db4c8;font-size:10px;">各+$10</span></div>
-          <div class="option-chips">
-            ${TOPPINGS.map(t => `<span class="chip topping" data-type="topping" data-size="${size}" data-extra="${t.extra}" onclick="toggleTopping(this,'${size}')">${t.label}</span>`).join('')}
-          </div>
-        </div>
-      </div>`;
-    }
-
-    let optionBlocks = '';
-    if (priceSingle) {
-      optionBlocks = sizeOptionBlock('single', '');
-    } else {
-      optionBlocks = `<div id="${el.id||''}" class="ml-opts">
-        <div class="size-opt-M" style="display:none">${sizeOptionBlock('M','M')}</div>
-        <div class="size-opt-L" style="display:none">${sizeOptionBlock('L','L')}</div>
-      </div>`;
-    }
-
     el.innerHTML = `
-      <div class="item-header">
+      <div class="item-top">
         <div class="item-info">
-          <div class="item-name">${recDot}${name}</div>
+          <div class="item-name">${isRec?'<span class="rec-dot"></span>':''}${name}</div>
           <div class="item-name-en">${en}</div>
           <div class="item-price">${priceLabel}</div>
         </div>
-        ${sizeControls}
+        ${sizeHTML}
       </div>
-      <div class="item-options">${optionBlocks}</div>
+      <div class="cups-area" data-noice="${noIce?'1':'0'}"></div>
     `;
   });
 }
 
-function changeQty(btn, delta, size) {
-  const item = btn.closest('.item');
-  const display = item.querySelector(`.qty-display[data-size="${size}"]`);
-  let val = parseInt(display.textContent) + delta;
-  if (val < 0) val = 0;
-  display.textContent = val;
+/* ── Build a single cup row ── */
+function buildCupRow(cupIdx, sizeLabel, noIce){
+  const id = `cup-${Math.random().toString(36).slice(2)}`;
+  const sweetChips = SWEETNESS.map((s,i)=>`<span class="chip${i===0?' on':''}" onclick="pickChip(this,'sweet')">${s}</span>`).join('');
+  const iceBlock   = noIce
+    ? `<div class="no-ice-note">（固定少冰）</div>`
+    : `<div class="opt-group"><div class="opt-lbl">🧊 冰塊</div><div class="chips">${ICE_OPTS.map((s,i)=>`<span class="chip${i===0?' on':''}" onclick="pickChip(this,'ice')">${s}</span>`).join('')}</div></div>`;
+  const topChips   = TOPPINGS.map(t=>`<span class="chip topping" onclick="toggleChip(this)">${t} +$10</span>`).join('');
+  const label      = sizeLabel ? `第 ${cupIdx} 杯（${sizeLabel}）` : `第 ${cupIdx} 杯`;
 
-  // Show/hide options
-  const optArea = item.querySelector('.item-options');
-  const isSingle = item.dataset.single;
+  return `<div class="cup-row" id="${id}">
+    <div class="cup-row-header">☕ ${label}</div>
+    <div class="opt-group"><div class="opt-lbl">🍬 甜度</div><div class="chips">${sweetChips}</div></div>
+    ${iceBlock}
+    <div class="opt-group"><div class="opt-lbl">➕ 加料 <span style="color:#8db4c8;font-size:10px;">各+$10</span></div><div class="chips">${topChips}</div></div>
+  </div>`;
+}
 
-  if (isSingle) {
-    optArea.classList.toggle('visible', val > 0);
+/* ── chip helpers ── */
+function pickChip(chip, type){
+  chip.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  chip.classList.add('on');
+}
+function toggleChip(chip){ chip.classList.toggle('on'); updateLiveTotal(); }
+
+/* ── qty change: add/remove cup rows ── */
+function changeQty(btn, delta, sz){
+  const card = btn.closest('.item-card');
+  const numEl = card.querySelector(`.qty-num[data-sz="${sz}"]`);
+  let val = parseInt(numEl.textContent)+delta;
+  if(val<0) val=0;
+  numEl.textContent = val;
+
+  const cupsArea = card.querySelector('.cups-area');
+  const noIce = cupsArea.dataset.noice==='1';
+
+  // Count existing cup rows for this size
+  const existing = [...cupsArea.querySelectorAll(`.cup-row[data-sz="${sz}"]`)];
+  if(delta>0){
+    const idx = existing.length+1;
+    const div = document.createElement('div');
+    div.innerHTML = buildCupRow(idx, sz==='S'?'':sz, noIce);
+    const row = div.firstElementChild;
+    row.dataset.sz = sz;
+    cupsArea.appendChild(row);
   } else {
-    const qtyM = parseInt(item.querySelector('.qty-display[data-size="M"]').textContent);
-    const qtyL = parseInt(item.querySelector('.qty-display[data-size="L"]').textContent);
-    optArea.classList.toggle('visible', qtyM > 0 || qtyL > 0);
-    const mBlock = item.querySelector('.size-opt-M');
-    const lBlock = item.querySelector('.size-opt-L');
-    if (mBlock) mBlock.style.display = qtyM > 0 ? 'block' : 'none';
-    if (lBlock) lBlock.style.display = qtyL > 0 ? 'block' : 'none';
+    // Remove last cup row for this size
+    const rows = [...cupsArea.querySelectorAll(`.cup-row[data-sz="${sz}"]`)];
+    if(rows.length) rows[rows.length-1].remove();
   }
 
+  // Re-label remaining rows per size
+  relabelCups(cupsArea, sz);
   updateLiveTotal();
 }
 
-function selectChip(chip, type, size) {
-  const siblings = chip.closest('.option-chips').querySelectorAll('.chip');
-  siblings.forEach(c => c.classList.remove('selected'));
-  chip.classList.add('selected');
+function relabelCups(cupsArea, sz){
+  const rows = [...cupsArea.querySelectorAll(`.cup-row[data-sz="${sz}"]`)];
+  rows.forEach((r,i)=>{
+    const header = r.querySelector('.cup-row-header');
+    const label = sz && sz!=='S' ? `第 ${i+1} 杯（${sz}）` : `第 ${i+1} 杯`;
+    header.textContent = `☕ ${label}`;
+  });
 }
 
-function toggleTopping(chip, size) {
-  chip.classList.toggle('selected');
-  updateLiveTotal();
+/* ── live total ── */
+function updateLiveTotal(){
+  let total=0;
+  document.querySelectorAll('.item-card[data-name]').forEach(card=>{
+    const priceM=parseInt(card.dataset.m||0), priceL=parseInt(card.dataset.l||0), priceS=parseInt(card.dataset.single||0);
+    card.querySelectorAll('.cup-row').forEach(row=>{
+      const sz = row.dataset.sz;
+      const base = sz==='M'?priceM : sz==='L'?priceL : priceS;
+      const extra = [...row.querySelectorAll('.chip.topping.on')].length*10;
+      total += base+extra;
+    });
+  });
+  document.getElementById('live-total').textContent=total;
 }
 
-function getItemData(item) {
-  const name = item.dataset.name;
-  const priceM = parseInt(item.dataset.m || 0);
-  const priceL = parseInt(item.dataset.l || 0);
-  const priceSingle = parseInt(item.dataset.single || 0);
-  const entries = [];
-
-  function getOpts(size) {
-    const sweet = item.querySelector(`.chip[data-type="sweet"][data-size="${size}"].selected`);
-    const ice = item.querySelector(`.chip[data-type="ice"][data-size="${size}"].selected`);
-    const toppings = [...item.querySelectorAll(`.chip[data-type="topping"][data-size="${size}"].selected`)];
-    return {
-      sweet: sweet ? sweet.textContent : '正常糖',
-      ice: ice ? ice.textContent : '正常冰',
-      toppings: toppings.map(t => t.textContent),
-      toppingExtra: toppings.reduce((s, t) => s + parseInt(t.dataset.extra || 0), 0)
-    };
-  }
-
-  if (priceSingle) {
-    const qty = parseInt(item.querySelector('.qty-display[data-size="single"]').textContent);
-    if (qty > 0) {
-      const opts = getOpts('single');
-      entries.push({ name, size: '', qty, unitPrice: priceSingle + opts.toppingExtra, basePrice: priceSingle, opts, subtotal: qty * (priceSingle + opts.toppingExtra) });
-    }
-  } else {
-    const qtyM = parseInt(item.querySelector('.qty-display[data-size="M"]').textContent);
-    const qtyL = parseInt(item.querySelector('.qty-display[data-size="L"]').textContent);
-    if (qtyM > 0) {
-      const opts = getOpts('M');
-      entries.push({ name, size: 'M', qty: qtyM, unitPrice: priceM + opts.toppingExtra, basePrice: priceM, opts, subtotal: qtyM * (priceM + opts.toppingExtra) });
-    }
-    if (qtyL > 0) {
-      const opts = getOpts('L');
-      entries.push({ name, size: 'L', qty: qtyL, unitPrice: priceL + opts.toppingExtra, basePrice: priceL, opts, subtotal: qtyL * (priceL + opts.toppingExtra) });
-    }
-  }
+/* ── collect order entries ── */
+function collectEntries(){
+  const entries=[];
+  document.querySelectorAll('.item-card[data-name]').forEach(card=>{
+    const name=card.dataset.name;
+    const priceM=parseInt(card.dataset.m||0), priceL=parseInt(card.dataset.l||0), priceS=parseInt(card.dataset.single||0);
+    card.querySelectorAll('.cup-row').forEach(row=>{
+      const sz=row.dataset.sz;
+      const base = sz==='M'?priceM : sz==='L'?priceL : priceS;
+      const sweet = row.querySelector('.chip.on[onclick*="sweet"]')?.textContent||'正常糖';
+      const ice   = row.querySelector('.chip.on[onclick*="ice"]')?.textContent||'正常冰';
+      const tops  = [...row.querySelectorAll('.chip.topping.on')].map(c=>c.textContent.replace(' +$10',''));
+      const extra = tops.length*10;
+      entries.push({ name, size: sz==='S'?'':sz, base, extra, total: base+extra, sweet, ice, tops });
+    });
+  });
   return entries;
 }
 
-function updateLiveTotal() {
-  let total = 0;
-  document.querySelectorAll('.item[data-name]').forEach(item => {
-    getItemData(item).forEach(e => total += e.subtotal);
-  });
-  document.getElementById('live-total').textContent = total;
-}
-
-function submitOrder() {
+/* ── submit ── */
+function submitOrder(){
   const name = document.getElementById('buyer-name').value.trim();
-  if (!name) { alert('請先輸入您的名字！'); document.getElementById('buyer-name').focus(); return; }
-
-  const allEntries = [];
-  document.querySelectorAll('.item[data-name]').forEach(item => {
-    getItemData(item).forEach(e => allEntries.push(e));
-  });
-
-  if (!allEntries.length) { alert('請至少選一個飲品！'); return; }
-
-  const total = allEntries.reduce((s, e) => s + e.subtotal, 0);
-  const order = { name, entries: allEntries, total, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  if(!name){ alert('請先輸入您的名字！'); document.getElementById('buyer-name').focus(); return; }
+  const entries = collectEntries();
+  if(!entries.length){ alert('請至少選一個飲品！'); return; }
+  const total = entries.reduce((s,e)=>s+e.total,0);
+  const order = { name, entries, total, time: new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}) };
 
   const orders = loadOrders();
-  const idx = orders.findIndex(o => o.name === name);
-  if (idx >= 0) { if (!confirm(`已有 ${name} 的訂單，要覆蓋嗎？`)) return; orders.splice(idx,1); }
+  const idx = orders.findIndex(o=>o.name===name);
+  if(idx>=0){ if(!confirm(`已有 ${name} 的訂單，要覆蓋嗎？`)) return; orders.splice(idx,1); }
   orders.push(order);
   saveOrders(orders);
 
   // Reset
-  document.querySelectorAll('.qty-display').forEach(d => d.textContent = '0');
-  document.querySelectorAll('.item-options').forEach(o => o.classList.remove('visible'));
-  document.querySelectorAll('.size-opt-M, .size-opt-L').forEach(b => b.style.display = 'none');
-  document.querySelectorAll('.chip[data-type="sweet"], .chip[data-type="ice"]').forEach(c => {
-    c.classList.toggle('selected', c.textContent === '正常糖' || c.textContent === '正常冰');
-  });
-  document.querySelectorAll('.chip[data-type="topping"]').forEach(c => c.classList.remove('selected'));
-  document.getElementById('buyer-name').value = '';
+  document.querySelectorAll('.qty-num').forEach(n=>n.textContent='0');
+  document.querySelectorAll('.cups-area').forEach(a=>a.innerHTML='');
+  document.getElementById('buyer-name').value='';
   updateLiveTotal();
-  alert(`✅ ${name} 的訂單已送出！\n共 ${allEntries.length} 項，小計 $${total}`);
+  alert(`✅ ${name} 的訂單已送出！\n共 ${entries.length} 杯，小計 $${total}`);
 }
 
-function renderSummary() {
-  const orders = loadOrders();
-  const el = document.getElementById('summary-content');
-  if (!orders.length) {
-    el.innerHTML = `<div class="empty-state"><div class="icon">📋</div><div>目前還沒有人下單</div><div style="font-size:12px;margin-top:6px;">請到「填寫訂單」頁面選購</div></div>`;
+/* ── render summary ── */
+function renderSummary(){
+  const orders=loadOrders();
+  const el=document.getElementById('summary-content');
+  if(!orders.length){
+    el.innerHTML='<div class="empty"><div class="icon">📋</div><div>目前還沒有人下單</div></div>';
     return;
   }
+  const grandTotal=orders.reduce((s,o)=>s+o.total,0);
+  const grandQty=orders.reduce((s,o)=>s+o.entries.length,0);
 
-  const grandTotal = orders.reduce((s,o) => s + o.total, 0);
-  const grandQty = orders.reduce((s,o) => s + o.entries.reduce((ss,e) => ss + e.qty, 0), 0);
+  // Menu order reference (for sorting)
+  const MENU_ORDER = ['紅茶','綠茶','春烏龍','輕烏龍','焙烏龍','檸檬春烏龍','香橙春烏龍','甘蔗春烏龍','青梅春烏龍','優酪春烏龍','雙柚金烏龍','奶茶','焙烏龍奶茶','珍珠奶茶','黃金珍珠奶綠','烘吉奶茶','紅茶鮮奶','輕烏龍鮮奶','焙烏龍鮮奶','烘吉鮮奶','芝士奶蓋春烏龍','芝士奶蓋焙烏龍','芝士奶蓋阿華田','芝士奶蓋烘吉茶'];
 
-  // item map
-  const itemMap = {};
-  orders.forEach(o => o.entries.forEach(e => {
-    const key = e.name + (e.size ? `(${e.size})` : '');
-    if (!itemMap[key]) itemMap[key] = { qty: 0, total: 0 };
-    itemMap[key].qty += e.qty;
-    itemMap[key].total += e.subtotal;
+  // Group by item name+size, combos as sub-entries
+  // groupMap: { 'name|size': { name, size, combos: { comboKey: {qty,total,opts} } } }
+  const groupMap = {};
+  const groupOrder = []; // track insertion order by menu
+  orders.forEach(o=>o.entries.forEach(e=>{
+    const gkey = `${e.name}||${e.size}`;
+    if(!groupMap[gkey]){
+      groupMap[gkey] = { name: e.name, size: e.size, totalQty:0, totalAmt:0, combos:{} };
+      groupOrder.push(gkey);
+    }
+    const g = groupMap[gkey];
+    g.totalQty++;
+    g.totalAmt += e.total;
+    const topStr = e.tops.length ? `＋${e.tops.join('+')}` : '';
+    const ckey = `${e.sweet}／${e.ice}${topStr?'／'+topStr:''}`;
+    if(!g.combos[ckey]) g.combos[ckey]={qty:0,total:0};
+    g.combos[ckey].qty++;
+    g.combos[ckey].total+=e.total;
   }));
 
-  let html = `<div class="grand-bar"><span>🧾 總金額</span><span>$${grandTotal}</span></div>
-  <div class="stat-row">
-    <div class="stat-box"><div class="stat-label">總杯數</div><div class="stat-val">${grandQty}</div></div>
-    <div class="stat-box"><div class="stat-label">訂購人數</div><div class="stat-val">${orders.length}</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">個人明細</div>`;
+  // Sort groups by menu order, then M before L
+  groupOrder.sort((a,b)=>{
+    const na=groupMap[a].name, nb=groupMap[b].name;
+    const ia=MENU_ORDER.indexOf(na), ib=MENU_ORDER.indexOf(nb);
+    if(ia!==ib) return (ia===-1?999:ia)-(ib===-1?999:ib);
+    // same name: M < L < ''
+    const sizeRank = s => s==='M'?0:s==='L'?1:2;
+    return sizeRank(groupMap[a].size)-sizeRank(groupMap[b].size);
+  });
 
-  orders.forEach(o => {
-    html += `<div class="person-block"><div class="person-name">👤 ${o.name} <span style="font-size:11px;color:#aaa;font-weight:400;">${o.time}</span></div>`;
-    o.entries.forEach(e => {
-      const sizeLabel = e.size ? `(${e.size})` : '';
-      const toppingStr = e.opts.toppings.length ? `＋${e.opts.toppings.join('、')}` : '';
-      html += `<div class="order-entry">
-        <div class="entry-main"><span>${e.name}${sizeLabel} × ${e.qty}</span><span>$${e.subtotal}</span></div>
-        <div class="entry-opts">${e.opts.sweet}／${e.opts.ice}${toppingStr ? '／' + toppingStr : ''}</div>
+  let html=`<div class="grand-bar"><span>🧾 總金額</span><span>$${grandTotal}</span></div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="sl">總杯數</div><div class="sv">${grandQty}</div></div>
+    <div class="stat-box"><div class="sl">訂購人數</div><div class="sv">${orders.length}</div></div>
+  </div>
+  <div class="card"><div class="card-title">個人明細</div>`;
+
+  orders.forEach(o=>{
+    html+=`<div class="person-block"><div class="pname">👤 ${o.name} <span style="font-size:11px;color:#aaa;font-weight:400;">${o.time}</span></div>`;
+    o.entries.forEach(e=>{
+      const sizeLabel=e.size?`(${e.size})`:'';
+      const topStr=e.tops.length?`／＋${e.tops.join('、')}` :'';
+      html+=`<div class="entry-row">
+        <div class="entry-left">
+          <div class="en">${e.name}${sizeLabel}</div>
+          <div class="eo">${e.sweet}／${e.ice}${topStr}</div>
+        </div>
+        <div class="entry-right">$${e.total}</div>
       </div>`;
     });
-    html += `<div class="person-subtotal">小計 $${o.total}</div></div>`;
+    html+=`<div class="psubtotal">小計 $${o.total}</div></div>`;
   });
-  html += `</div>
-  <div class="card">
-    <div class="card-title">商品統計</div>`;
-  Object.entries(itemMap).sort((a,b) => b[1].qty - a[1].qty).forEach(([key,val]) => {
-    html += `<div class="item-stat-row"><span>${key}</span><span style="color:#555;">× ${val.qty}　<strong>$${val.total}</strong></span></div>`;
-  });
-  html += `</div>
-  <div class="action-btns">
-    <button class="btn-outline" onclick="copyText()">📋 複製訂單文字</button>
-    <button class="btn-danger" onclick="clearOrders()">🗑️ 清空</button>
-  </div>`;
 
-  el.innerHTML = html;
-}
-
-function copyText() {
-  const orders = loadOrders();
-  if (!orders.length) return;
-  const grandTotal = orders.reduce((s,o) => s + o.total, 0);
-  const grandQty = orders.reduce((s,o) => s + o.entries.reduce((ss,e) => ss + e.qty, 0), 0);
-  let text = `🧋 得正 Oolong Tea 團購訂單\n${'─'.repeat(26)}\n`;
-  orders.forEach(o => {
-    text += `\n👤 ${o.name}\n`;
-    o.entries.forEach(e => {
-      const toppingStr = e.opts.toppings.length ? `＋${e.opts.toppings.join('+')}` : '';
-      text += `  ${e.name}${e.size?`(${e.size})`:''}${toppingStr} × ${e.qty}  [${ e.opts.sweet}／${e.opts.ice}]  $${e.subtotal}\n`;
+  html+=`</div><div class="card"><div class="card-title">商品統計（含客製化）</div>`;
+  groupOrder.forEach(gkey=>{
+    const g = groupMap[gkey];
+    const sizeLabel = g.size ? `(${g.size})` : '';
+    const combos = Object.entries(g.combos);
+    const multiCombo = combos.length > 1;
+    html+=`<div class="istat">
+      <div class="istat-main" style="font-weight:700;">
+        <span>${g.name}${sizeLabel}</span>
+        <span>× ${g.totalQty}　$${g.totalAmt}</span>
+      </div>`;
+    combos.forEach(([opts, val])=>{
+      html+=`<div style="display:flex;justify-content:space-between;font-size:11px;color:#666;padding:2px 0 0 8px;">
+        <span>・${opts}</span>
+        <span>${multiCombo?`× ${val.qty}　$${val.total}`:''}</span>
+      </div>`;
     });
-    text += `  小計：$${o.total}\n`;
+    html+=`</div>`;
   });
-  text += `\n${'─'.repeat(26)}\n總杯數：${grandQty} 杯\n總金額：$${grandTotal}`;
 
-  navigator.clipboard.writeText(text).then(() => {
-    const t = document.getElementById('copied-toast');
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 2000);
-  }).catch(() => prompt('請手動複製：', text));
+  html+=`</div><div class="action-btns">
+    <button class="btn-o" onclick="copyText()">📋 複製訂單文字</button>
+    <button class="btn-d" onclick="clearOrders()">🗑️ 清空</button>
+  </div>`;
+  el.innerHTML=html;
 }
 
-function clearOrders() {
-  if (confirm('確定要清空所有訂單嗎？')) { localStorage.removeItem(STORAGE_KEY); renderSummary(); }
+function copyText(){
+  const orders=loadOrders();
+  if(!orders.length) return;
+  const grandTotal=orders.reduce((s,o)=>s+o.total,0);
+  const grandQty=orders.reduce((s,o)=>s+o.entries.length,0);
+  let text=`🧋 得正 Oolong Tea 團購訂單\n${'─'.repeat(28)}\n`;
+  orders.forEach(o=>{
+    text+=`\n👤 ${o.name}\n`;
+    o.entries.forEach((e,i)=>{
+      const sz=e.size?`(${e.size})`:'';
+      const top=e.tops.length?` ＋${e.tops.join('+')}` :'';
+      text+=`  ${i+1}. ${e.name}${sz}${top}  [${e.sweet}／${e.ice}]  $${e.total}\n`;
+    });
+    text+=`  小計：$${o.total}\n`;
+  });
+  text+=`\n${'─'.repeat(28)}\n總杯數：${grandQty} 杯\n總金額：$${grandTotal}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast'); t.style.display='block';
+    setTimeout(()=>t.style.display='none',2000);
+  }).catch(()=>prompt('請手動複製：',text));
 }
 
-// Init
+function clearOrders(){
+  if(confirm('確定要清空所有訂單嗎？')){ localStorage.removeItem(STORAGE_KEY); renderSummary(); }
+}
+
 buildItems();
-updateLiveTotal();
 </script>
 </body>
 </html>
