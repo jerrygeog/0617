@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>得正 Oolong Tea Project｜團購訂單</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    background: #f5f0e8;
+    color: #1a1a2e;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #1a1a2e;
+    color: #f5f0e8;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header .brand-en {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #8db4c8;
+    margin-bottom: 4px;
+  }
+  header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  header .subtitle {
+    font-size: 12px;
+    color: #8db4c8;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  .order-form {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .name-section {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .name-section label {
+    font-size: 13px;
+    color: #666;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .name-section input {
+    width: 100%;
+    border: 2px solid #e0d8cc;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #faf8f5;
+  }
+  .name-section input:focus {
+    border-color: #1a1a2e;
+  }
+
+  .category {
+    margin-bottom: 12px;
+  }
+  .category-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #8db4c8;
+    padding: 0 4px 8px;
+    border-bottom: 1px solid #d6cfc4;
+    margin-bottom: 8px;
+  }
+
+  .item {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .item-info {
+    flex: 1;
+  }
+  .item-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+  }
+  .item-name-en {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
+  }
+  .item-price {
+    font-size: 12px;
+    color: #5a7f94;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+
+  .size-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .size-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .size-label {
+    font-size: 11px;
+    color: #888;
+    width: 14px;
+    font-weight: 700;
+  }
+  .qty-control {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #e0d8cc;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #faf8f5;
+  }
+  .qty-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    font-size: 17px;
+    cursor: pointer;
+    color: #1a1a2e;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .qty-btn:active { background: #eee; }
+  .qty-display {
+    width: 28px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  /* single price item */
+  .item.single-price .size-controls {
+    flex-direction: row;
+  }
+
+  .summary-bar {
+    position: sticky;
+    bottom: 0;
+    background: #1a1a2e;
+    color: #f5f0e8;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.18);
+  }
+  .summary-bar .my-total {
+    font-size: 13px;
+    color: #8db4c8;
+  }
+  .summary-bar .my-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f5f0e8;
+  }
+  .submit-btn {
+    background: #8db4c8;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+  }
+  .submit-btn:active { background: #7aa3b5; }
+
+  /* Result panel */
+  #result-panel {
+    display: none;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+  .result-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .result-card h3 {
+    font-size: 13px;
+    color: #8db4c8;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .result-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0ece4;
+  }
+  .result-item-row:last-child { border-bottom: none; }
+  .result-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 10px;
+    margin-top: 4px;
+    border-top: 2px solid #1a1a2e;
+  }
+
+  /* Summary table */
+  #summary-panel {
+    display: none;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 100px;
+  }
+  .summary-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .summary-card h3 {
+    font-size: 13px;
+    color: #8db4c8;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .person-block {
+    border-bottom: 1px solid #f0ece4;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+  .person-block:last-child { border-bottom: none; }
+  .person-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .person-item { font-size: 13px; color: #555; padding: 2px 0; display: flex; justify-content: space-between; }
+  .person-subtotal { font-size: 14px; font-weight: 700; color: #1a1a2e; text-align: right; margin-top: 6px; }
+
+  .grand-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 14px 20px;
+    background: #1a1a2e;
+    color: #f5f0e8;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  .action-btns {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-outline {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #1a1a2e;
+    background: white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn-fill {
+    flex: 1;
+    padding: 12px;
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .copy-text {
+    background: #f5f0e8;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+  }
+
+  .copied-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    display: none;
+    z-index: 999;
+  }
+
+  .tab-bar {
+    display: flex;
+    background: #1a1a2e;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8db4c8;
+    cursor: pointer;
+    letter-spacing: 1px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    color: #f5f0e8;
+    border-bottom-color: #8db4c8;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .plus-note {
+    font-size: 11px;
+    color: #999;
+    margin-top: 3px;
+  }
+  .recommend-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: #8db4c8;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-en">OOLONG TEA PROJECT</div>
+  <h1>得　正</h1>
+  <div class="subtitle">新北市中和 ▸ 團購訂單</div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showView('order')">📋 填寫訂單</div>
+  <div class="tab" onclick="showView('summary')">📊 團購總表</div>
+</div>
+
+<div id="view-order" class="view active">
+  <div class="order-form">
+    <div class="name-section">
+      <label>👤 您的姓名</label>
+      <input type="text" id="buyer-name" placeholder="請輸入您的名字" />
+    </div>
+
+    <!-- Original TEA -->
+    <div class="category">
+      <div class="category-title">ORIGINAL TEA　原味茶</div>
+
+      <div class="item" data-name="紅茶 Black Tea" data-m="25" data-l="30">
+        <div class="item-info">
+          <div class="item-name">紅茶</div>
+          <div class="item-name-en">Black Tea</div>
+          <div class="item-price">M $25 ／ L $30</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row">
+            <span class="size-label">M</span>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+              <span class="qty-display">0</span>
+              <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+            </div>
+          </div>
+          <div class="size-row">
+            <span class="size-label">L</span>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+              <span class="qty-display">0</span>
+              <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" data-name="綠茶 Green Tea" data-m="25" data-l="30">
+        <div class="item-info">
+          <div class="item-name">綠茶</div>
+          <div class="item-name-en">Green Tea</div>
+          <div class="item-price">M $25 ／ L $30</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="春烏龍 Spring Oolong Tea ★" data-m="30" data-l="35">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>春烏龍</div>
+          <div class="item-name-en">Spring Oolong Tea</div>
+          <div class="item-price">M $30 ／ L $35</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="輕烏龍 Light Roasted Oolong Tea ★" data-m="30" data-l="35">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>輕烏龍</div>
+          <div class="item-name-en">Light Roasted Oolong Tea</div>
+          <div class="item-price">M $30 ／ L $35</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="焙烏龍 Dark Roasted Oolong Tea ★" data-m="30" data-l="35">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>焙烏龍</div>
+          <div class="item-name-en">Dark Roasted Oolong Tea</div>
+          <div class="item-price">M $30 ／ L $35</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Double FRUIT -->
+    <div class="category">
+      <div class="category-title">DOUBLE FRUIT　水果茶</div>
+
+      <div class="item" data-name="檸檬春烏龍 Lemon Spring Oolong ★" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>檸檬春烏龍</div>
+          <div class="item-name-en">Lemon Spring Oolong Tea</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="香橙春烏龍 Orange Spring Oolong ★" data-m="60" data-l="70">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>香橙春烏龍</div>
+          <div class="item-name-en">Orange Spring Oolong Tea</div>
+          <div class="item-price">M $60 ／ L $70</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="甘蔗春烏龍 Sugar Cane Spring Oolong ★" data-m="60" data-l="70">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>甘蔗春烏龍</div>
+          <div class="item-name-en">Sugar Cane Spring Oolong Tea</div>
+          <div class="item-price">M $60 ／ L $70</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="青梅春烏龍 Green Plum Spring Oolong" data-m="50" data-l="60">
+        <div class="item-info">
+          <div class="item-name">青梅春烏龍</div>
+          <div class="item-name-en">Green Plum Spring Oolong Tea</div>
+          <div class="item-price">M $50 ／ L $60</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="優酪春烏龍 Yogurt Spring Oolong" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name">優酪春烏龍</div>
+          <div class="item-name-en">Yogurt Spring Oolong Tea</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="雙柚金烏龍 Yuzu Oolong Tea" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name">雙柚金烏龍</div>
+          <div class="item-name-en">Yuzu Oolong Tea</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Classic MILK TEA -->
+    <div class="category">
+      <div class="category-title">CLASSIC MILK TEA　經典奶茶</div>
+
+      <div class="item" data-name="奶茶 Milk Tea" data-m="45" data-l="50">
+        <div class="item-info">
+          <div class="item-name">奶茶</div>
+          <div class="item-name-en">Milk Tea</div>
+          <div class="item-price">M $45 ／ L $50</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="焙烏龍奶茶 Dark Roasted Oolong Milk Tea ★" data-m="45" data-l="50">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>焙烏龍奶茶</div>
+          <div class="item-name-en">Dark Roasted Oolong Milk Tea</div>
+          <div class="item-price">M $45 ／ L $50</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="珍珠奶茶 Pearl Milk Tea" data-m="55" data-l="60">
+        <div class="item-info">
+          <div class="item-name">珍珠奶茶</div>
+          <div class="item-name-en">Pearl Milk Tea</div>
+          <div class="item-price">M $55 ／ L $60</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="黃金珍珠奶綠 Golden Bubble Green Milk Tea ★" data-m="55" data-l="60">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>黃金珍珠奶綠</div>
+          <div class="item-name-en">Golden Bubble Green Milk Tea</div>
+          <div class="item-price">M $55 ／ L $60</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="烘吉奶茶 Hojicha Milk Tea" data-single="50">
+        <div class="item-info">
+          <div class="item-name">烘吉奶茶</div>
+          <div class="item-name-en">Hojicha Milk Tea</div>
+          <div class="item-price">$50</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row">
+            <div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fresh MILK -->
+    <div class="category">
+      <div class="category-title">FRESH MILK　鮮奶系列</div>
+
+      <div class="item" data-name="紅茶鮮奶 Black Tea Latte ★" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>紅茶鮮奶</div>
+          <div class="item-name-en">Black Tea Latte</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="輕烏龍鮮奶 Light Roasted Oolong Latte ★" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>輕烏龍鮮奶</div>
+          <div class="item-name-en">Light Roasted Oolong Tea Latte</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="焙烏龍鮮奶 Dark Roasted Oolong Latte" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name">焙烏龍鮮奶</div>
+          <div class="item-name-en">Dark Roasted Oolong Tea Latte</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="烘吉鮮奶 Hojicha Latte" data-single="70">
+        <div class="item-info">
+          <div class="item-name">烘吉鮮奶</div>
+          <div class="item-name-en">Hojicha Latte</div>
+          <div class="item-price">$70</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row">
+            <div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cheese MILK FOAM -->
+    <div class="category">
+      <div class="category-title">CHEESE MILK FOAM　芝士奶蓋</div>
+      <div style="font-size:11px; color:#e07b4a; padding: 0 4px 10px;">＊奶蓋固定少冰</div>
+
+      <div class="item" data-name="芝士奶蓋春烏龍 Cheese Milk Foam Spring Oolong ★" data-m="50" data-l="60">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>芝士奶蓋春烏龍</div>
+          <div class="item-name-en">Cheese Milk Foam Spring Oolong</div>
+          <div class="item-price">M $50 ／ L $60</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="芝士奶蓋焙烏龍 Cheese Milk Foam Dark Roasted Oolong ★" data-m="50" data-l="60">
+        <div class="item-info">
+          <div class="item-name"><span class="recommend-dot"></span>芝士奶蓋焙烏龍</div>
+          <div class="item-name-en">Cheese Milk Foam Dark Roasted Oolong</div>
+          <div class="item-price">M $50 ／ L $60</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="芝士奶蓋阿華田 Cheese Milk Foam Ovaltine" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name">芝士奶蓋阿華田</div>
+          <div class="item-name-en">Cheese Milk Foam Ovaltine</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <div class="item" data-name="芝士奶蓋烘吉茶 Cheese Milk Foam Hojicha" data-m="55" data-l="65">
+        <div class="item-info">
+          <div class="item-name">芝士奶蓋烘吉茶</div>
+          <div class="item-name-en">Cheese Milk Foam Hojicha</div>
+          <div class="item-price">M $55 ／ L $65</div>
+        </div>
+        <div class="size-controls">
+          <div class="size-row"><span class="size-label">M</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="size-row"><span class="size-label">L</span><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-display">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 80px;"></div>
+  </div>
+
+  <div class="summary-bar">
+    <div>
+      <div class="my-total">我的小計</div>
+      <div class="my-amount">$<span id="live-total">0</span></div>
+    </div>
+    <button class="submit-btn" onclick="submitOrder()">確認送出 ▸</button>
+  </div>
+</div>
+
+<!-- Summary View -->
+<div id="view-summary" class="view">
+  <div id="summary-panel" style="display:block;">
+    <div style="max-width:480px; margin:0 auto; padding:16px; padding-bottom:100px;">
+      <div id="summary-content">
+        <div style="text-align:center; padding: 60px 20px; color:#999;">
+          <div style="font-size: 40px; margin-bottom: 12px;">📋</div>
+          <div style="font-size: 15px;">目前還沒有人下單</div>
+          <div style="font-size: 12px; margin-top: 6px;">請先到「填寫訂單」頁面選購</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="copied-toast" id="copied-toast">✅ 已複製到剪貼簿！</div>
+
+<script>
+  // Storage key
+  const STORAGE_KEY = 'dezheng_group_order_v1';
+
+  // Load orders from localStorage
+  function loadOrders() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch(e) { return []; }
+  }
+
+  function saveOrders(orders) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  }
+
+  // Tab switching
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    event.target.classList.add('active');
+    if (name === 'summary') renderSummary();
+  }
+
+  // Qty control
+  function changeQty(btn, delta) {
+    const display = btn.parentElement.querySelector('.qty-display');
+    let val = parseInt(display.textContent) + delta;
+    if (val < 0) val = 0;
+    display.textContent = val;
+    updateLiveTotal();
+  }
+
+  function updateLiveTotal() {
+    let total = 0;
+    document.querySelectorAll('.item').forEach(item => {
+      const priceM = parseInt(item.dataset.m || 0);
+      const priceL = parseInt(item.dataset.l || 0);
+      const priceSingle = parseInt(item.dataset.single || 0);
+      const rows = item.querySelectorAll('.size-row');
+      if (priceSingle) {
+        const qty = parseInt(rows[0].querySelector('.qty-display').textContent);
+        total += qty * priceSingle;
+      } else {
+        const qtyM = parseInt(rows[0].querySelector('.qty-display').textContent);
+        const qtyL = rows[1] ? parseInt(rows[1].querySelector('.qty-display').textContent) : 0;
+        total += qtyM * priceM + qtyL * priceL;
+      }
+    });
+    document.getElementById('live-total').textContent = total;
+  }
+
+  function submitOrder() {
+    const name = document.getElementById('buyer-name').value.trim();
+    if (!name) { alert('請先輸入您的名字！'); document.getElementById('buyer-name').focus(); return; }
+
+    const items = [];
+    document.querySelectorAll('.item').forEach(item => {
+      const itemName = item.dataset.name;
+      const priceM = parseInt(item.dataset.m || 0);
+      const priceL = parseInt(item.dataset.l || 0);
+      const priceSingle = parseInt(item.dataset.single || 0);
+      const rows = item.querySelectorAll('.size-row');
+
+      if (priceSingle) {
+        const qty = parseInt(rows[0].querySelector('.qty-display').textContent);
+        if (qty > 0) items.push({ name: itemName, size: '', qty, price: priceSingle, subtotal: qty * priceSingle });
+      } else {
+        const qtyM = parseInt(rows[0].querySelector('.qty-display').textContent);
+        const qtyL = rows[1] ? parseInt(rows[1].querySelector('.qty-display').textContent) : 0;
+        if (qtyM > 0) items.push({ name: itemName, size: 'M', qty: qtyM, price: priceM, subtotal: qtyM * priceM });
+        if (qtyL > 0) items.push({ name: itemName, size: 'L', qty: qtyL, price: priceL, subtotal: qtyL * priceL });
+      }
+    });
+
+    if (items.length === 0) { alert('請至少選一個飲品！'); return; }
+
+    const total = items.reduce((s, i) => s + i.subtotal, 0);
+    const order = { name, items, total, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit', minute:'2-digit'}) };
+
+    const orders = loadOrders();
+    // Remove existing order with same name
+    const idx = orders.findIndex(o => o.name === name);
+    if (idx >= 0) orders.splice(idx, 1);
+    orders.push(order);
+    saveOrders(orders);
+
+    // Reset form
+    document.querySelectorAll('.qty-display').forEach(d => d.textContent = '0');
+    document.getElementById('buyer-name').value = '';
+    updateLiveTotal();
+
+    alert(`✅ ${name} 的訂單已送出！\n共 ${items.length} 項，小計 $${total}`);
+  }
+
+  function renderSummary() {
+    const orders = loadOrders();
+    const container = document.getElementById('summary-content');
+
+    if (orders.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding: 60px 20px; color:#999;"><div style="font-size:40px;margin-bottom:12px;">📋</div><div style="font-size:15px;">目前還沒有人下單</div><div style="font-size:12px;margin-top:6px;">請先到「填寫訂單」頁面選購</div></div>`;
+      return;
+    }
+
+    const grandTotal = orders.reduce((s, o) => s + o.total, 0);
+    const grandQty = orders.reduce((s, o) => s + o.items.reduce((ss, i) => ss + i.qty, 0), 0);
+
+    // Build item totals
+    const itemMap = {};
+    orders.forEach(o => {
+      o.items.forEach(i => {
+        const key = i.name + (i.size ? ` (${i.size})` : '');
+        if (!itemMap[key]) itemMap[key] = { qty: 0, total: 0, price: i.price };
+        itemMap[key].qty += i.qty;
+        itemMap[key].total += i.subtotal;
+      });
+    });
+
+    let html = '';
+
+    // Grand total card
+    html += `<div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;padding:14px 20px;background:#1a1a2e;color:#f5f0e8;border-radius:12px;margin-bottom:12px;">
+      <span>🧾 總金額</span><span>$${grandTotal}</span>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:12px;">
+      <div style="flex:1;background:white;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+        <div style="font-size:11px;color:#999;margin-bottom:4px;">總杯數</div>
+        <div style="font-size:22px;font-weight:700;">${grandQty}</div>
+      </div>
+      <div style="flex:1;background:white;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+        <div style="font-size:11px;color:#999;margin-bottom:4px;">訂購人數</div>
+        <div style="font-size:22px;font-weight:700;">${orders.length}</div>
+      </div>
+    </div>`;
+
+    // Per-person
+    html += `<div style="background:white;border-radius:14px;padding:20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+      <div style="font-size:13px;color:#8db4c8;letter-spacing:2px;margin-bottom:14px;">個人明細</div>`;
+    orders.forEach(o => {
+      html += `<div style="border-bottom:1px solid #f0ece4;padding-bottom:12px;margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px;">👤 ${o.name} <span style="font-size:11px;color:#aaa;font-weight:400;">${o.time}</span></div>`;
+      o.items.forEach(i => {
+        html += `<div style="display:flex;justify-content:space-between;font-size:13px;color:#555;padding:2px 0;">
+          <span>${i.name.split(' ')[0]}${i.size ? ` (${i.size})` : ''} × ${i.qty}</span>
+          <span>$${i.subtotal}</span>
+        </div>`;
+      });
+      html += `<div style="font-size:14px;font-weight:700;text-align:right;margin-top:6px;color:#1a1a2e;">小計 $${o.total}</div></div>`;
+    });
+    html += `</div>`;
+
+    // Item summary
+    html += `<div style="background:white;border-radius:14px;padding:20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+      <div style="font-size:13px;color:#8db4c8;letter-spacing:2px;margin-bottom:14px;">商品統計</div>`;
+    Object.entries(itemMap).sort((a,b) => b[1].qty - a[1].qty).forEach(([key, val]) => {
+      html += `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0;border-bottom:1px solid #f0ece4;">
+        <span>${key.split(' ').slice(0,-1).join(' ') || key}</span>
+        <span style="color:#555;">× ${val.qty}　<strong>$${val.total}</strong></span>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // Action buttons
+    html += `<div style="display:flex;gap:10px;margin-bottom:12px;">
+      <button onclick="copyText()" style="flex:1;padding:12px;border:2px solid #1a1a2e;background:white;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">📋 複製文字</button>
+      <button onclick="clearOrders()" style="flex:1;padding:12px;background:#c0392b;color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">🗑️ 清空訂單</button>
+    </div>`;
+
+    container.innerHTML = html;
+  }
+
+  function copyText() {
+    const orders = loadOrders();
+    if (!orders.length) return;
+
+    const grandTotal = orders.reduce((s, o) => s + o.total, 0);
+    const grandQty = orders.reduce((s, o) => s + o.items.reduce((ss, i) => ss + i.qty, 0), 0);
+
+    let text = `🧋 得正 Oolong Tea 團購訂單\n`;
+    text += `${'─'.repeat(24)}\n`;
+    orders.forEach(o => {
+      text += `\n👤 ${o.name}\n`;
+      o.items.forEach(i => {
+        text += `  ${i.name.split(' ')[0]}${i.size ? `(${i.size})` : ''} × ${i.qty}  $${i.subtotal}\n`;
+      });
+      text += `  小計：$${o.total}\n`;
+    });
+    text += `\n${'─'.repeat(24)}\n`;
+    text += `總杯數：${grandQty} 杯\n`;
+    text += `總金額：$${grandTotal}`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('copied-toast');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    }).catch(() => {
+      prompt('請手動複製：', text);
+    });
+  }
+
+  function clearOrders() {
+    if (confirm('確定要清空所有訂單嗎？此動作無法復原。')) {
+      localStorage.removeItem(STORAGE_KEY);
+      renderSummary();
+    }
+  }
+
+  // Init
+  updateLiveTotal();
+</script>
+</body>
+</html>
