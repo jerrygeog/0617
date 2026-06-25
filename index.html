@@ -155,7 +155,20 @@ header .subtitle { font-size:11px; color:#f0c98a; margin-top:5px; }
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'chuikun_v1';
+const STORAGE_KEY = 'chuikun_orders';
+const SHARED = true;
+
+async function loadOrders(){
+  try {
+    const result = await window.storage.get(STORAGE_KEY, SHARED);
+    return result ? JSON.parse(result.value) : [];
+  } catch(e){ return []; }
+}
+async function saveOrders(orders){
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(orders), SHARED);
+  } catch(e){ console.error('Save failed', e); }
+}
 
 // ── Product data ──
 const CATEGORIES = [
@@ -591,7 +604,7 @@ function collectEntries(){
   return entries;
 }
 
-function submitOrder(){
+async function submitOrder(){
   const name = document.getElementById('buyer-name').value.trim();
   if(!name){ alert('請先輸入您的名字！'); document.getElementById('buyer-name').focus(); return; }
   const entries = collectEntries();
@@ -601,18 +614,16 @@ function submitOrder(){
   const remark = document.getElementById('remark').value.trim();
   const order = { name, entries, total, qty, remark, time: new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}) };
 
-  const orders = loadOrders();
+  showToast('⏳ 送出中...');
+  const orders = await loadOrders();
   const idx = orders.findIndex(o=>o.name===name);
   if(idx>=0){ if(!confirm(`已有 ${name} 的訂單，要覆蓋嗎？`)) return; orders.splice(idx,1); }
   orders.push(order);
-  saveOrders(orders);
+  await saveOrders(orders);
 
   // Reset
   Object.keys(qtys).forEach(k=>{ qtys[k]=0; const el=document.getElementById('q-'+k); if(el) el.textContent='0'; });
-  document.querySelectorAll('[id^="count-"]').forEach(el=>{
-    el.innerHTML = el.textContent.replace(/\s*<[^>]*>/g,'');
-  });
-  buildCategories(); // rebuild to reset badges
+  buildCategories();
   document.getElementById('buyer-name').value='';
   document.getElementById('remark').value='';
   updateLive();
@@ -633,9 +644,10 @@ function showView(name){
   if(name==='summary') renderSummary();
 }
 
-function renderSummary(){
-  const orders=loadOrders();
+async function renderSummary(){
   const el=document.getElementById('summary-content');
+  el.innerHTML='<div class="empty"><div class="icon">⏳</div><div>載入中...</div></div>';
+  const orders=await loadOrders();
   if(!orders.length){
     el.innerHTML='<div class="empty"><div class="icon">📋</div><div>目前還沒有人下單</div></div>';
     return;
@@ -679,8 +691,8 @@ function renderSummary(){
   el.innerHTML=html;
 }
 
-function copyText(){
-  const orders=loadOrders();
+async function copyText(){
+  const orders=await loadOrders();
   if(!orders.length) return;
   const grandTotal=orders.reduce((s,o)=>s+o.total,0);
   const grandQty=orders.reduce((s,o)=>s+o.qty,0);
@@ -695,8 +707,11 @@ function copyText(){
   navigator.clipboard.writeText(text).then(()=>showToast('✅ 已複製到剪貼簿！')).catch(()=>prompt('請手動複製：',text));
 }
 
-function clearOrders(){
-  if(confirm('確定要清空所有訂單嗎？')){ localStorage.removeItem(STORAGE_KEY); renderSummary(); }
+async function clearOrders(){
+  if(confirm('確定要清空所有訂單嗎？')){
+    try { await window.storage.delete(STORAGE_KEY, SHARED); } catch(e){}
+    renderSummary();
+  }
 }
 
 buildCategories();
